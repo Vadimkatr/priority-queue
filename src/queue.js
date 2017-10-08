@@ -15,10 +15,10 @@ class PriorityQueue {
 	}
 
 	shift() {
-		if(this.length == 0)
-			throw new Error();
-		this.length--;
-		return this.heap.pop();
+		// if(this.length == 0)
+		// 	throw new Error();
+		// this.length--;
+		// return this.heap.pop();
 		
 	}
 

@@ -82,9 +82,15 @@ class Node {
 	whichSon(){
 		return this.parent !== null ? ( this.parent.left === this ? 'left' : 'rigth') :  false;
 	}
-
+	
 	isParent(parent){
 		return this.parent === parent ? true : false;
+	}
+
+	hasChild(){
+		return this.left != null && this.right != null ? "both" :
+			this.left == null && this.right != null ? "right" :
+			this.left != null && this.right == null ? "left" : "no";
 	}
 }
 
