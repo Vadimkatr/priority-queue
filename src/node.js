@@ -11,17 +11,15 @@ class Node {
 	appendChild(node) {
 		if(node === null)
 			return false;
+
 		if(this.left === null){
             this.left = node;
             node.parent = this;
-			return true;
 		}
 		else if(this.right === null){
 			this.right = node;
 			node.parent = this;
-			return true;
 		}
-		return false;
 	}
 
 	removeChild(node) {
@@ -36,7 +34,6 @@ class Node {
 		this[key] = null;
 		node.parent = null;
 		return true;
-
 	}
 
 	remove() {
@@ -48,35 +45,40 @@ class Node {
 	}
 
 	swapWithParent() {
-		if(this.parent !== null){
-			let key = this.whichSon();
-			let pp = this.parent.parent;
-			let child = this;
-			let lChild = this.left;
-			let rChild = this.right;
-			this.removeBothChild();
-			let parent = this.parent;
-			let plChild = this.parent.left;
-			let prChild = this.parent.right;
-			this.parent.removeBothChild();
-			parent.appendChild(lChild);
-			parent.appendChild(rChild);
-			if(key == 'left'){
+		if(this.parent!==null)
+		{
+			let parent=this.parent;
+			let nextParent=this.parent.parent;
+			let left=parent.left;
+			let right=parent.right;
+			let l=this.left;
+			let r=this.right;
+			let f=false;
+			if(this.parent.left==this)
+				f=true;
+			this.remove();
+			parent.remove();
+			if(nextParent!==null)
+				nextParent.appendChild(this);
+			parent.left=null;
+			parent.right=null;
+			parent.appendChild(this.left);
+			parent.appendChild(this.right);
+			this.left=null;
+			this.right=null;
+			if(f)
+			{
 				this.appendChild(parent);
-				this.appendChild(prChild);
+				this.appendChild(right);
 			}
-			else{
-				this.appendChild(plChild);
+			else
+			{
+				this.appendChild(left);
 				this.appendChild(parent);
 			}
-			if(pp!==null){
-				pp.removeChild(parent);
-				pp.appendChild(this);
-			}
-			this.parent = pp;
-			return true;
+
+			
 		}
-		return false;
 	}
 	
 	whichSon(){

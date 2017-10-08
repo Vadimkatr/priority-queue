@@ -38,22 +38,21 @@ class MaxHeap {
 	}
 
 	restoreRootFromLastInsertedNode(detached) {
-		if (this.parentNodes.length != 0){
-			 this.root = this.parentNodes.pop();
-			 this.root.parent = null;
-			 this.root.left = detached.left;
-			 if (detached.left !== null && detached.left !== undefined && detached.left != this.root) // undefined ???????? зачем??
-				 detached.left.parent = this.root;
-			 else this.root.left = null;
-			 this.root.right = detached.right;
-			 if (detached.right !== null && detached.right !== undefined && detached.right != this.root)
-				 detached.right.parent = this.root;
-			 else this.root.right = null;
-			 if (this.root.hasChild() != "both" && this.root.hasChild() != "no") {
-				 this.parentNodes.unshift(this.root);
-			 }
+		if(typeof(detached.data)==='undefined')
+			return;
+		if(this.parentNodes.length>0)
+		{
+			this.root=this.parentNodes.pop();
+			if(this.root.parent!=null && this.root.parent !== detached &&this.root.parent.right!=null&&this.root.parent.left!=null)
+				this.parentNodes.unshift(this.root.parent);
+			this.root.remove();
+			this.root.appendChild(detached.left)
+			this.root.appendChild(detached.right)
+			if(this.root.left==null||this.root.right==null)
+				this.parentNodes.unshift(this.root);
 		}
-		else return {};
+		else
+			this.root=null;
 	}
 
 	size() {
@@ -76,7 +75,6 @@ class MaxHeap {
 		
 		if(this.root === null){
 			this.root = this.parentNodes[0];		
-			
 			return;
 		}
 		this.parentNodes[0].appendChild(node);
@@ -87,6 +85,7 @@ class MaxHeap {
 	}
 
 	shiftNodeUp(node) {
+
 		if (node.parent == null){
 			this.root = node;
 			return;
@@ -165,19 +164,3 @@ class MaxHeap {
 }
 
 module.exports = MaxHeap;
-const h = new MaxHeap();
-console.log(h.size() === 0);
-
-h.push(15, 42);
-h.push(13, 0);
-console.log(h.size() === 2);
-
-h.push(14, 100);
-console.log(h.size() === 3);
-
-h.pop();
-h.pop();
-console.log(h.size() === 1);
-
-h.clear();
-console.log(h.size() === 0);
